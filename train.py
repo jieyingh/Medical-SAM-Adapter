@@ -140,6 +140,7 @@ def main():
                 'best_tol': best_dice,
                 'path_helper': args.path_helper,
             }, is_best, args.path_helper['ckpt_path'], filename="best_dice_checkpoint.pth")
+                print(f'New best DICE score: {edice} at epoch {epoch}. Saved best model at {args.path_helper["ckpt_path"]}.')
             else:
                 is_best = False
 
