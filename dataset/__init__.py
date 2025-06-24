@@ -18,6 +18,7 @@ from .segrap import SegRap
 from .stare import STARE
 from .toothfairy import ToothFairy
 from .wbc import WBC
+from .oo import Oocyte
 
 
 def get_dataloader(args):
@@ -225,6 +226,11 @@ def get_dataloader(args):
         nice_train_loader = DataLoader(dataset, batch_size=args.b, sampler=train_sampler, num_workers=8, pin_memory=True)
         nice_test_loader = DataLoader(dataset, batch_size=args.b, sampler=test_sampler, num_workers=8, pin_memory=True)
         '''end'''
+
+    elif args.dataset == 'oo':
+        ''' oo data '''
+        dataset = Oocyte(args, data_path = args.data_path, split_path = args.split_path, transform)
+
 
     else:
         print("the dataset is not supported now!!!")

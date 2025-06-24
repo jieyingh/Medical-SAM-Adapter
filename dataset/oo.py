@@ -8,7 +8,7 @@ import torch
 from torch.utils.data import Dataset
 import torchvision.transforms.functional as TF
 
-class Ooocyte(Dataset):
+class Oocyte(Dataset):
     def __init__(self, args, data_path, transform=None, transform_mask=None, mode='train'):
         self.data_path = data_path
         self.image_dir = os.path.join(data_path, 'images')
