@@ -1237,3 +1237,23 @@ def random_box(multi_rater):
 
     return x_min, x_max, y_min, y_max
 
+def validate_epoch(args, epoch, net, val_loader, writer, logger):
+    if args.dataset != 'REFUGE':
+        tol, (eiou, edice) = function.validation_sam(args, val_loader, epoch, net, writer)
+        logger.info(f'Total score: {tol}, IOU: {eiou}, DICE: {edice} || @ epoch {epoch}.')
+        return tol, edice
+    elif args.dataset == 'REFUGE':
+        tol, (eiou_cup, eiou_disc, edice_cup, edice_disc) = function.validation_sam(args, val_loader, epoch, net, writer)
+        logger.info(f'Total score: {tol}, IOU_CUP: {eiou_cup}, IOU_DISC: {eiou_disc}, '
+                    f'DICE_CUP: {edice_cup}, DICE_DISC: {edice_disc} || @ epoch {epoch}.')
+        return tol, (edice_cup + edice_disc) / 2
+    elif args.dataset == 'oo':
+        # need to write custum validation function for oocyte dataset
+        pass
+
+def train_epoch(args, epoch, net, optimizer, train_loader, writer, logger, GPUdevice):
+    net.train()
+    time_start = time.time()
+    loss = function.train_sam(args, net, optimizer, train_loader, epoch, writer, vis=args.vis)
+    time_end = time.time()
+    logger.info(f'Train loss: {loss} || @ epoch {epoch}. Time: {time_end - time_start:.2f}s')
