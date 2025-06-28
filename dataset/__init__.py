@@ -2,6 +2,7 @@ import numpy as np
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, random_split
 from torch.utils.data.sampler import SubsetRandomSampler
+from sklearn.model_selection import RepeatedKFold
 
 from utils import *
 
@@ -228,9 +229,45 @@ def get_dataloader(args):
         '''end'''
 
     elif args.dataset == 'oo':
-        ''' oo data '''
-        dataset = Oocyte(args, data_path = args.data_path, split_path = args.split_path, transform)
 
+        """
+        Modified for oocyte dataset.
+        Able to handle cross-validation if argument -cv is set.
+        Returns train and validation dataloaders. Does not return test dataloader.
+        """
+
+        dataset = Oocyte(args, data_path = args.data_path, transform = transform_train, transform_msk= transform_train_seg)
+        dataset_size = len(dataset)
+        indices = list(range(dataset_size))
+
+        if args.cross_validate:
+            # by default uses 5-fold cross-validation
+            kfold = RepeatedKFold(n_splits=5, n_repeats=1, random_state=args.seed)
+
+            # generating splits for curent fold
+            train_indices, val_indices = list(kfold.split(indices))[args.fold]
+
+            # creating samplers for current fold
+            train_sampler = SubsetRandomSampler(train_indices)
+            val_sampler = SubsetRandomSampler(val_indices)
+
+            nice_train_loader = DataLoader(dataset, batch_size=args.b, sampler=train_sampler, num_workers=8, pin_memory=True)
+            nice_val_loader = DataLoader(dataset, batch_size=args.b, sampler=val_sampler, num_workers=8, pin_memory=True)
+
+            return nice_train_loader, nice_val_loader
+        
+        else:
+            # normal train/val split
+            split = int(np.floor(args.val_ratio * dataset_size))
+            np.random.shuffle(indices)
+
+            train_sampler = SubsetRandomSampler(indices[split:])
+            val_sampler = SubsetRandomSampler(indices[:split])
+
+            nice_train_loader = DataLoader(dataset, batch_size=args.b, sampler=train_sampler, num_workers=8, pin_memory=True)
+            nice_val_loader = DataLoader(dataset, batch_size=args.b, sampler=val_sampler, num_workers=8, pin_memory=True)
+
+            return nice_train_loader, nice_val_loader
 
     else:
         print("the dataset is not supported now!!!")
