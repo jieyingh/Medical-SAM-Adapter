@@ -3,7 +3,7 @@ import argparse
 
 def parse_args():    
     parser = argparse.ArgumentParser()
-    parser.add_argument('-seed', type=int, default=24, help='random seed')
+    parser.add_argument('-seed', type=int, default=22, help='random seed')
     parser.add_argument('-net', type=str, default='sam', help='net type')
     parser.add_argument('-baseline', type=str, default='unet', help='baseline net type')
     parser.add_argument('-encoder', type=str, default='default', help='encoder type')
@@ -46,13 +46,10 @@ def parse_args():
     parser.add_argument('-evl_chunk', type=int, default=None , help='evaluation chunk')
     parser.add_argument('-mid_dim', type=int, default=None , help='middle dim of adapter or the rank of lora matrix')
     parser.add_argument('-multimask_output', type=int, default=1 , help='the number of masks output for multi-class segmentation, set 2 for REFUGE dataset.')
-    parser.add_argument(
-    '-data_path',
-    type=str,
-    default='../data',
-    help='The path of segmentation data')
-    # '../dataset/RIGA/DiscRegion'
-    # '../dataset/ISIC'
+    parser.add_argument('-cv', '--cross_validate', action = 'store_true', help ='enable 5-fold cross validation')
+    parser.add_argument('-f', '--fold', type=int, default=0, help='fold number for cross validation when cross-validate is enabled')
+    parser.add_argument('-d','--data_path', type=str, default='../data', help='The path of segmentation data')
+    parser.add_argument('-vr','-val_ratio', type=float, default=0.2, help='validation ratio for train/val split')
     opt = parser.parse_args()
 
     return opt
