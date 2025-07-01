@@ -1,85 +1,78 @@
 import os
-import json
 from glob import glob
 from PIL import Image
-from sklearn.model_selection import KFold
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-import torchvision.transforms.functional as TF
+from pathlib import Path
+from albumentations.pytorch import ToTensorV2
+
+"""
+Dataset class for Oocyte segmentation task.
+This class handles loading images and masks, applying transformations,
+and preparing data for training, validation, or testing.
+It supports three modes: 'train', 'val', and 'test'.
+"""
 
 class Oocyte(Dataset):
-    def __init__(self, args, data_path, transform=None, transform_mask=None, mode='train'):
+    def __init__(self, args, data_path, shared_transform, img_transform, infer_transform, mode='none', prompt='none'):
         self.data_path = data_path
         self.image_dir = os.path.join(data_path, 'images')
         self.mask_dir = os.path.join(data_path, 'masks')
         self.mode = mode
-        self.transform = transform
-        self.transform_mask = transform_mask
+        self.prompt = prompt
+        self.img_size = args.image_size
+        self.cases = sorted([p.stem for p in Path(self.image_dir).glob('*.png')])
 
-        self.fold_file = getattr(args, 'fold_file', None)
-        self.fold_index = getattr(args, 'fold', 0)
-        self.fold_save_path = getattr(args, 'fold_save_path', os.path.join(data_path, 'folds.json'))
-
-        self.img_paths = sorted(glob(os.path.join(self.image_dir, '*.png')))
-        self.img_names = [os.path.basename(p) for p in self.img_paths]
-
-        self.folds = self._get_or_create_folds(self.img_names)
-        if mode == 'train':
-            self.current_files = [f for i in range(5) if i != self.fold_index for f in self.folds[i]]
-        else:  # 'val' or 'test'
-            self.current_files = self.folds[self.fold_index]
-
-    def _get_or_create_folds(self, filenames):
-        if self.fold_file and os.path.exists(self.fold_file):
-            with open(self.fold_file, 'r') as f:
-                folds = json.load(f)
-        elif os.path.exists(self.fold_save_path):
-            with open(self.fold_save_path, 'r') as f:
-                folds = json.load(f)
-        else:
-            kf = KFold(n_splits=5, shuffle=True, random_state=42)
-            splits = list(kf.split(filenames))
-            folds = {}
-            for i, (_, val_idx) in enumerate(splits):
-                folds[i] = [filenames[idx] for idx in val_idx]
-            with open(self.fold_save_path, 'w') as f:
-                json.dump(folds, f)
-        return folds
+        self.shared_transform = shared_transform
+        self.img_transform = img_transform
+        self.infer_transform = infer_transform
 
     def __len__(self):
-        return len(self.current_files)
+        return len(self.cases)
 
     def __getitem__(self, index):
-        name = self.current_files[index]
-        img_path = os.path.join(self.image_dir, name)
-        mask_path = os.path.join(self.mask_dir, name)
+        point_label = 1 # always positive prompt
 
+        """Get the images"""
+        if index >= len(self.cases):
+            raise IndexError(f"Index {index} out of bounds for dataset with length {len(self.cases)}")
+        
+        name = self.cases[index]
+        img_path = os.path.join(self.image_dir, name + '.png')
         image = Image.open(img_path).convert('RGB')
-        mask = Image.open(mask_path).convert('L')  # mask values: 0–3
 
-        if self.transform:
-            image = self.transform(image)
+        if self.mode != 'test':
+            # Load the mask only if not in test mode
+            mask_path = os.path.join(self.mask_dir, name + '.png')
+            mask = Image.open(mask_path).convert('L')
+
+        """Transform the image and mask based on the mode"""
+        if self.mode == 'train':
+            augmented = self.shared_transform(image=np.array(image), mask=np.array(mask))
+            augmented['image'] = self.img_transform(augmented['image'])['image']
+            final = ToTensorV2()(image=augmented['image'], mask=augmented['mask'])
+            image, mask = final['image'], final['mask']
+            
+        elif self.mode == 'val':
+            processed = self.infer_transform(image=np.array(image), mask=np.array(mask))
+            image = processed['image']
+            mask = processed['mask']
+
+        elif self.mode == 'test':
+            image = self.infer_transform(image=np.array(image))['image']
+
         else:
-            image = TF.to_tensor(image)
-
-        if self.transform_mask:
-            mask = self.transform_mask(mask)
-        else:
-            mask = torch.as_tensor(np.array(mask), dtype=torch.long)
-
-        # Create a multi-channel one-hot mask: shape (4, H, W)
-        num_classes = 4
-        h, w = mask.shape
-        mask_onehot = torch.zeros((num_classes, h, w), dtype=torch.float32)
-        for c in range(num_classes):
-            mask_onehot[c] = (mask == c).float()
+            raise ValueError(f"Unknown mode: {self.mode}. Use 'train', 'val', or 'test'.")
+        
+        if self.mode != 'test':
+            mask = mask.long()
 
         return {
             'image': image,
-            'label': mask_onehot,
-            'p_label': 1,
-            'pt': torch.tensor([0, 0], dtype=torch.int32),
+            'label': mask, # the target masks, just need height and width
+            'p_label': 1, # prompt label to decide positive/negative prompt. can put 1 if don't need negative prompt
+            'pt': torch.tensor([0, 0], dtype=torch.int32), # the prompt. 
             'box': [0, 0, 0, 0],
-            'image_meta_dict': {'filename_or_obj': name}
+            'image_meta_dict': {'filename_or_obj': name} 
         }
