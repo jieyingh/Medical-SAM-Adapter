@@ -266,7 +266,7 @@ def get_dataloader(args):
         indices = list(range(dataset_size))
 
         if args.cross_validate:
-            kfold = RepeatedKFold(n_splits=5, n_repeats=2, random_state=args.seed)
+            kfold = RepeatedKFold(n_splits=5, n_repeats=1, random_state=args.seed)
             train_indices, val_indices = list(kfold.split(indices))[args.fold]
         else:
             split = int(np.floor(args.val_ratio * dataset_size))
