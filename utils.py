@@ -59,6 +59,8 @@ import cfg
 # from precpt import run_precpt
 from models.discriminator import Discriminator
 
+import function
+
 # from siren_pytorch import SirenNet, SirenWrapper
 
 args = cfg.parse_args()

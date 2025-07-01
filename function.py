@@ -48,7 +48,7 @@ criterion_G = torch.nn.BCEWithLogitsLoss(pos_weight=pos_weight)
 
 torch.backends.cudnn.benchmark = True
 loss_function = DiceCELoss(to_onehot_y=True, softmax=True)
-scaler = torch.cuda.amp.GradScaler()
+scaler = torch.amp.GradScaler()
 max_iterations = settings.EPOCH
 post_label = AsDiscrete(to_onehot=14)
 post_pred = AsDiscrete(argmax=True, to_onehot=14)
