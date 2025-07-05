@@ -50,6 +50,7 @@ def parse_args():
     parser.add_argument('-f', '--fold', type=int, default=0, help='fold number for cross validation when cross-validate is enabled')
     parser.add_argument('-d','--data_path', type=str, default='../data', help='The path of segmentation data')
     parser.add_argument('-vr','-val_ratio', type=float, default=0.2, help='validation ratio for train/val split')
+    parser.add_argument('-l','--label', type=str, default=None, help='segmentation task label (only implemented for OO)')
     opt = parser.parse_args()
 
     return opt

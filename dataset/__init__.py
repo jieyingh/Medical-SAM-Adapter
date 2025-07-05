@@ -266,6 +266,7 @@ def get_dataloader(args):
         indices = list(range(dataset_size))
 
         if args.cross_validate:
+            print(f"Cross-validation enabled. Using fold {args.fold}")
             kfold = RepeatedKFold(n_splits=5, n_repeats=1, random_state=args.seed)
             train_indices, val_indices = list(kfold.split(indices))[args.fold]
         else:
@@ -278,18 +279,29 @@ def get_dataloader(args):
         train_dataset = Oocyte(args, data_path=args.data_path, shared_transform=shared_transform,
                             img_transform=img_transform, infer_transform=infer_transform,
                             mode='train', prompt='click')
+        print(f"Training dataset size: {len(train_dataset)}")
+       
         val_dataset = Oocyte(args, data_path=args.data_path, shared_transform=None,
                             img_transform=None, infer_transform=infer_transform,
                             mode='val', prompt='click')
+        
+        print(f"Validation dataset size: {len(val_dataset)}")
 
         # Wrap with Subset to use the correct indices
         train_dataset = Subset(train_dataset, train_indices)
         val_dataset = Subset(val_dataset, val_indices)
+        
+        print(f"Train indices: {train_indices[:5]}... Total: {len(train_indices)}")
+        print(f"Validation indices: {val_indices[:5]}... Total: {len(val_indices)}")
 
         nice_train_loader = DataLoader(train_dataset, batch_size=args.b, shuffle=True,
                                     num_workers=8, pin_memory=True)
         nice_val_loader = DataLoader(val_dataset, batch_size=args.b, shuffle=False,
                                     num_workers=8, pin_memory=True)
+        
+        print(f"Train loader size: {len(nice_train_loader)} batches")
+        print(f"Validation loader size: {len(nice_val_loader)} batches")
+
 
         return nice_train_loader, nice_val_loader
 
