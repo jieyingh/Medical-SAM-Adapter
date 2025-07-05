@@ -42,21 +42,28 @@ class Oocyte(Dataset):
         box = [0, 0, 0, 0]
         pt = (-1, -1)
         p_label = 1  # Default to positive
+        
+        print(f"Loading image: {name}, Mode: {self.mode}, Prompt: {self.prompt}")
 
         if self.mode != 'test':
             mask_path = os.path.join(self.mask_dir, name + f'_{self.label}.png')
             mask = Image.open(mask_path).convert('L')
+            
+            print(f"Loading mask: {mask_path} in mode {self.mode}")
 
         if self.mode == 'train':
             augmented = self.shared_transform(image=np.array(image), mask=np.array(mask))
             augmented['image'] = self.img_transform(augmented['image'])['image']
             final = ToTensorV2()(image=augmented['image'], mask=augmented['mask'])
             image, mask = final['image'], final['mask']
+
+            print(f"loading image: {name}, Mode: {self.mode}, Prompt: {self.prompt}, Image shape: {image.shape}, Mask shape: {mask.shape}")
             
         elif self.mode == 'val':
             processed = self.infer_transform(image=np.array(image), mask=np.array(mask))
             image = processed['image']
             mask = processed['mask']
+            print(f"loading image: {name}, Mode: {self.mode}, Prompt: {self.prompt}, Image shape: {image.shape}, Mask shape: {mask.shape}")
 
         elif self.mode == 'test':
             image = self.infer_transform(image=np.array(image))['image']
