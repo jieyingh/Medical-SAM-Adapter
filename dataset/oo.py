@@ -35,59 +35,40 @@ class Oocyte(Dataset):
         return len(self.cases)
 
     def __getitem__(self, index):
+        point_label = 1
+
+        """Get the images"""
         name = self.cases[index]
         img_path = os.path.join(self.image_dir, name + '.png')
         image = Image.open(img_path).convert('RGB')
+        mask_path = os.path.join(self.mask_dir, name + f'_{self.label}.png')
+        mask = Image.open(mask_path).convert('L')
 
-        box = [0, 0, 0, 0]
-        pt = (-1, -1)
-        p_label = 1  # Default to positive
-        
-        print(f"Loading image: {name}, Mode: {self.mode}, Prompt: {self.prompt}")
+        augmented = self.shared_transform(image=np.array(image), mask=np.array(mask))
+        augmented['image'] = self.img_transform(image=augmented['image'])['image']
 
-        if self.mode != 'test':
-            mask_path = os.path.join(self.mask_dir, name + f'_{self.label}.png')
-            mask = Image.open(mask_path).convert('L')
-            
-            print(f"Loading mask: {mask_path} in mode {self.mode}")
+        if self.prompt == 'click':
+            point_label, pt = random_click(np.array(mask), point_label)
 
-        if self.mode == 'train':
-            augmented = self.shared_transform(image=np.array(image), mask=np.array(mask))
-            augmented['image'] = self.img_transform(augmented['image'])['image']
-            final = ToTensorV2()(image=augmented['image'], mask=augmented['mask'])
-            image, mask = final['image'], final['mask']
+        # else:
+        #     pt = np.array([0, 0], dtype=np.int32)
 
-            print(f"loading image: {name}, Mode: {self.mode}, Prompt: {self.prompt}, Image shape: {image.shape}, Mask shape: {mask.shape}")
-            
-        elif self.mode == 'val':
-            processed = self.infer_transform(image=np.array(image), mask=np.array(mask))
-            image = processed['image']
-            mask = processed['mask']
-            print(f"loading image: {name}, Mode: {self.mode}, Prompt: {self.prompt}, Image shape: {image.shape}, Mask shape: {mask.shape}")
-
-        elif self.mode == 'test':
-            image = self.infer_transform(image=np.array(image))['image']
-
+        if self.prompt == 'box':
+            x_min, x_max, y_min, y_max = random_box(mask)
+            box = [x_min, x_max, y_min, y_max]
         else:
-            raise ValueError(f"Unknown mode: {self.mode}. Use 'train', 'val', or 'test'.")
+            box = [0, 0, 0, 0]
 
-        if self.mode != 'test':
-            mask = mask.long()
-
-            if self.prompt == 'click':
-                p_label, pt = random_click(np.array(mask), point_labels=1)
-
-            elif self.prompt == 'box':
-                x_min, x_max, y_min, y_max = random_box(mask.unsqueeze(0).unsqueeze(0).float())
-                box = [x_min, x_max, y_min, y_max]
+        final = ToTensorV2()(image=augmented['image'], mask=augmented['mask'])
+        image, mask = final['image'], final['mask']
 
         # printing everything returned
-        print(f"Image: {name}, Mode: {self.mode}, Point Label: {p_label}, Point: {pt}, Box: {box}")
+        print(f"Image: {name}, Mode: {self.mode}, Point Label: {point_label}, Point: {pt}, Box: {box}")
 
         return {
             'image': image,
-            'label': mask if self.mode != 'test' else None,
-            'p_label': p_label,
+            'label': mask.unsqueeze(0),
+            'p_label': point_label,
             'pt': pt,
             'box': box,
             'image_meta_dict': {'filename_or_obj': name}
