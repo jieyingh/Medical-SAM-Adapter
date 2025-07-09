@@ -23,5 +23,5 @@ python /lustre07/scratch/jieying/Medical-SAM-Adapter/train.py \
     -val_freq 1 \
     -b 5 -dataset oo \
     -sam_ckpt /lustre07/scratch/jieying/Medical-SAM-Adapter/checkpoint/sam/sam_vit_b_01ec64.pth \
-    -d $SLURM_TMPDIR/data \
+    -d $SLURM_TMPDIR/data/train \
     -l ZP
