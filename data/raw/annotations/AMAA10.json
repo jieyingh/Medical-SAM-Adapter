@@ -3,6 +3,32 @@
   "flags": {},
   "shapes": [
     {
+      "label": "PB",
+      "points": [
+        343,
+        465,
+        333,
+        448,
+        342,
+        419,
+        375,
+        409,
+        403,
+        410,
+        423,
+        422,
+        397,
+        462,
+        372,
+        469
+      ],
+      "bbox": [],
+      "group_id": -4,
+      "content": null,
+      "shape_type": "polygon",
+      "flags": {}
+    },
+    {
       "label": "ZP",
       "points": [
         445,
@@ -133,38 +159,6 @@
       "bbox": [],
       "group_id": 3,
       "content": "1.01",
-      "shape_type": "polygon",
-      "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
-        440,
-        431,
-        455,
-        437,
-        465,
-        450,
-        467,
-        466,
-        465,
-        473,
-        441,
-        477,
-        419,
-        471,
-        409,
-        457,
-        407,
-        440,
-        417,
-        429,
-        431,
-        429
-      ],
-      "bbox": [],
-      "group_id": 4,
-      "content": null,
       "shape_type": "polygon",
       "flags": {}
     },

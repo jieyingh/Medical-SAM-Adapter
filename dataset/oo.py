@@ -41,7 +41,8 @@ class Oocyte(Dataset):
         name = self.cases[index]
         img_path = os.path.join(self.image_dir, name + '.png')
         image = Image.open(img_path).convert('RGB')
-        mask_path = os.path.join(self.mask_dir, name + f'_{self.label}.png')
+        # mask_path = os.path.join(self.mask_dir, name + f'_{self.label}.png')
+        mask_path = os.path.join(self.mask_dir, name + '.png')  # Assuming masks are named like images
         mask = Image.open(mask_path).convert('L')
 
         augmented = self.shared_transform(image=np.array(image), mask=np.array(mask))

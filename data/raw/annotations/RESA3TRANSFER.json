@@ -197,6 +197,30 @@
       "content": "0.99",
       "shape_type": "polygon",
       "flags": {}
+    },
+    {
+      "label": "PB",
+      "points": [
+        425,
+        537,
+        401,
+        515,
+        365,
+        512,
+        358,
+        538,
+        380,
+        568,
+        417,
+        569,
+        434,
+        562
+      ],
+      "bbox": [],
+      "group_id": -14,
+      "content": null,
+      "shape_type": "polygon",
+      "flags": {}
     }
   ],
   "imagePath": "..\\RESA3TRANSFER.jpg",

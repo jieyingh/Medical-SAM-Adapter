@@ -37,7 +37,7 @@ def json_to_mask(json_file, output_folder):
         # Draw outer shape(s)
         for shape in data["shapes"]:
             if shape["label"] == label:
-                draw.polygon(shape["points"], fill=1)
+                draw.polygon(shape["points"], fill=255)
 
         # Subtract inner shapes if applicable
         inner_label = inner_map.get(label)

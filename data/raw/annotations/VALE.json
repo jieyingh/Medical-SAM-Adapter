@@ -193,6 +193,34 @@
       "content": "0.97",
       "shape_type": "polygon",
       "flags": {}
+    },
+    {
+      "label": "PB",
+      "points": [
+        447,
+        591,
+        472,
+        580,
+        477,
+        546,
+        466,
+        520,
+        430,
+        510,
+        410,
+        519,
+        400,
+        532,
+        407,
+        576,
+        430,
+        592
+      ],
+      "bbox": [],
+      "group_id": -17,
+      "content": null,
+      "shape_type": "polygon",
+      "flags": {}
     }
   ],
   "imagePath": "..\\VALE.jpg",

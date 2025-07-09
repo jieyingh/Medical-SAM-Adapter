@@ -197,28 +197,6 @@
     {
       "label": "PB",
       "points": [
-        203,
-        210,
-        201,
-        200,
-        209,
-        196,
-        224,
-        196,
-        222,
-        206,
-        209,
-        214
-      ],
-      "bbox": [],
-      "group_id": -5,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
         246,
         183,
         243,

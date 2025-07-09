@@ -177,28 +177,6 @@
       "content": "0.97",
       "shape_type": "polygon",
       "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
-        351,
-        471,
-        357,
-        428,
-        345,
-        400,
-        304,
-        417,
-        289,
-        454,
-        308,
-        485
-      ],
-      "bbox": [],
-      "group_id": -3,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
     }
   ],
   "imagePath": "..\\ZHAM14.jpg",

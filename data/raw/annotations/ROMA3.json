@@ -153,30 +153,6 @@
       "content": "0.97",
       "shape_type": "polygon",
       "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
-        546,
-        516,
-        517,
-        502,
-        508,
-        474,
-        512,
-        444,
-        526,
-        439,
-        546,
-        466,
-        553,
-        498
-      ],
-      "bbox": [],
-      "group_id": -224,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
     }
   ],
   "imagePath": "..\\ROMA3.jpg",

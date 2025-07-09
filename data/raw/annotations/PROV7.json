@@ -129,34 +129,6 @@
       "flags": {}
     },
     {
-      "label": "PB",
-      "points": [
-        162,
-        186,
-        152,
-        192,
-        140,
-        190,
-        134,
-        178,
-        135,
-        160,
-        143,
-        152,
-        157,
-        153,
-        165,
-        165,
-        164,
-        181
-      ],
-      "bbox": [],
-      "group_id": -194,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
-    },
-    {
       "label": "OO",
       "points": [
         213,
@@ -197,6 +169,28 @@
       "bbox": [],
       "group_id": -193,
       "content": "0.96",
+      "shape_type": "polygon",
+      "flags": {}
+    },
+    {
+      "label": "PB",
+      "points": [
+        199,
+        208,
+        183,
+        213,
+        174,
+        194,
+        180,
+        179,
+        197,
+        181,
+        202,
+        197
+      ],
+      "bbox": [],
+      "group_id": -13,
+      "content": null,
       "shape_type": "polygon",
       "flags": {}
     }

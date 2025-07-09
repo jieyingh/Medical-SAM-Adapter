@@ -183,30 +183,6 @@
       "content": "0.98",
       "shape_type": "polygon",
       "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
-        412,
-        243,
-        386,
-        244,
-        362,
-        206,
-        372,
-        168,
-        393,
-        159,
-        409,
-        177,
-        419,
-        211
-      ],
-      "bbox": [],
-      "group_id": -393,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
     }
   ],
   "imagePath": "..\\ZHAH8.jpg",

@@ -193,28 +193,6 @@
       "content": "0.99",
       "shape_type": "polygon",
       "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
-        373,
-        509,
-        388,
-        482,
-        374,
-        460,
-        341,
-        458,
-        330,
-        484,
-        339,
-        510
-      ],
-      "bbox": [],
-      "group_id": -29,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
     }
   ],
   "imagePath": "..\\BOLK6.jpg",

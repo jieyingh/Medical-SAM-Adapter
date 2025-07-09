@@ -213,30 +213,6 @@
       "content": "0.96",
       "shape_type": "polygon",
       "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
-        641,
-        234,
-        641,
-        220,
-        626,
-        207,
-        604,
-        204,
-        595,
-        223,
-        616,
-        240,
-        635,
-        241
-      ],
-      "bbox": [],
-      "group_id": -280,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
     }
   ],
   "imagePath": "..\\THES3.jpg",

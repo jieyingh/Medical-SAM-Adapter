@@ -191,6 +191,28 @@
       "content": "0.97",
       "shape_type": "polygon",
       "flags": {}
+    },
+    {
+      "label": "PB",
+      "points": [
+        557,
+        531,
+        596,
+        550,
+        598,
+        576,
+        575,
+        591,
+        530,
+        575,
+        514,
+        546
+      ],
+      "bbox": [],
+      "group_id": -11,
+      "content": null,
+      "shape_type": "polygon",
+      "flags": {}
     }
   ],
   "imagePath": "..\\LOTK7.jpg",

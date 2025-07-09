@@ -65,8 +65,8 @@ def json_to_mask(json_file, output_folder):
     mask.save(mask_output_path)
 
 if __name__ == "__main__": 
-    annotation_folder = r"data\raw"
-    output_folder = r"data\train\masks"
+    annotation_folder = r"data\raw\annotations"
+    output_folder = r"data\raw\masks"
 
     for json_file in Path(annotation_folder).glob("*.json"):
         json_to_mask(json_file, output_folder)

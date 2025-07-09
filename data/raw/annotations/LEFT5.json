@@ -171,30 +171,6 @@
       "content": "0.97",
       "shape_type": "polygon",
       "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
-        325,
-        404,
-        313,
-        416,
-        272,
-        406,
-        255,
-        390,
-        260,
-        375,
-        275,
-        372,
-        307,
-        384
-      ],
-      "bbox": [],
-      "group_id": -83,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
     }
   ],
   "imagePath": "..\\LEFT5.jpg",

@@ -185,28 +185,6 @@
       "content": "0.88",
       "shape_type": "polygon",
       "flags": {}
-    },
-    {
-      "label": "PB",
-      "points": [
-        457,
-        509,
-        469,
-        496,
-        456,
-        474,
-        438,
-        465,
-        429,
-        479,
-        437,
-        499
-      ],
-      "bbox": [],
-      "group_id": -34,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
     }
   ],
   "imagePath": "..\\SHET1.jpg",

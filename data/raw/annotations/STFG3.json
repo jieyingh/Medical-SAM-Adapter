@@ -95,28 +95,6 @@
       "flags": {}
     },
     {
-      "label": "PB",
-      "points": [
-        363,
-        213,
-        368,
-        189,
-        401,
-        170,
-        424,
-        172,
-        425,
-        191,
-        400,
-        210
-      ],
-      "bbox": [],
-      "group_id": -255,
-      "content": null,
-      "shape_type": "polygon",
-      "flags": {}
-    },
-    {
       "label": "PVS",
       "points": [
         671,

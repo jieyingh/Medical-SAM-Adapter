@@ -191,6 +191,30 @@
       "content": "0.98",
       "shape_type": "polygon",
       "flags": {}
+    },
+    {
+      "label": "PB",
+      "points": [
+        334,
+        479,
+        351,
+        507,
+        343,
+        533,
+        317,
+        534,
+        295,
+        516,
+        295,
+        484,
+        314,
+        475
+      ],
+      "bbox": [],
+      "group_id": -19,
+      "content": null,
+      "shape_type": "polygon",
+      "flags": {}
     }
   ],
   "imagePath": "..\\WHAC5.jpg",
