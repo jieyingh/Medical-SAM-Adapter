@@ -53,8 +53,8 @@ class Oocyte(Dataset):
         if self.prompt == 'click':
             point_label, pt = random_click(np.array(mask), point_label)
 
-        # else:
-        #     pt = np.array([0, 0], dtype=np.int32)
+        else:
+            pt = np.array([0, 0], dtype=np.int32)
 
         if self.prompt == 'box':
             x_min, x_max, y_min, y_max = random_box(mask)
