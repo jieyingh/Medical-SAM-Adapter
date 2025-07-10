@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=3
 #SBATCH --mem=8G
 #SBATCH --account=def-banire
-#SBATCH --job-name=SAM-ZP
+#SBATCH --job-name=SAM-PVS
 #SBATCH --output=/lustre07/scratch/jieying/Medical-SAM-Adapter/out/01-PVS.out
 
 # Load modules
