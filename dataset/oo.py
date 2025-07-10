@@ -57,7 +57,7 @@ class Oocyte(Dataset):
             pt = np.array([0, 0], dtype=np.int32)
 
         if self.prompt == 'box':
-            x_min, x_max, y_min, y_max = random_box(mask)
+            x_min, x_max, y_min, y_max = random_box(np.array(mask))
             box = [x_min, x_max, y_min, y_max]
         else:
             box = [0, 0, 0, 0]
