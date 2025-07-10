@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --time=08:00:00 
+#SBATCH --time=02:00:00 
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=3
-#SBATCH --mem=12G
+#SBATCH --mem=8G
 #SBATCH --account=def-banire
 #SBATCH --job-name=SAM-ZP
 #SBATCH --output=/lustre07/scratch/jieying/Medical-SAM-Adapter/out/01-ZP.out

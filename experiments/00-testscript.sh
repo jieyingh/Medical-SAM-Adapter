@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --time=08:00:00 
+#SBATCH --time=02:00:00 
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=3
-#SBATCH --mem=12G
+#SBATCH --mem=8G
 #SBATCH --account=def-banire
 #SBATCH --job-name=SAM-ZP
-#SBATCH --output=/lustre07/scratch/jieying/Medical-SAM-Adapter/out/01-ZP.out
+#SBATCH --output=/lustre07/scratch/jieying/Medical-SAM-Adapter/out/00-test.out
 
 # Load modules
 module load StdEnv/2023 gcc/12.3 cuda/12.2 opencv/4.10.0 
