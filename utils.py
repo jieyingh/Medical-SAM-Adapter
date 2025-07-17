@@ -1218,24 +1218,45 @@ def generate_click_prompt(img, msk, pt_label = 1):
     return img, pt, msk #[b, 2, d], [b, c, h, w, d]
 
 
-def random_box(multi_rater):
-    max_value = torch.max(multi_rater[:,0,:,:], dim=0)[0]
-    max_value_position = torch.nonzero(max_value)
+# def random_box(multi_rater):
+#     max_value = torch.max(multi_rater[:,0,:,:], dim=0)[0]
+#     max_value_position = torch.nonzero(max_value)
 
-    x_coords = max_value_position[:, 0]
-    y_coords = max_value_position[:, 1]
-
-
-    x_min = int(torch.min(x_coords))
-    x_max = int(torch.max(x_coords))
-    y_min = int(torch.min(y_coords))
-    y_max = int(torch.max(y_coords))
+#     x_coords = max_value_position[:, 0]
+#     y_coords = max_value_position[:, 1]
 
 
-    x_min = random.choice(np.arange(x_min-10,x_min+11))
-    x_max = random.choice(np.arange(x_max-10,x_max+11))
-    y_min = random.choice(np.arange(y_min-10,y_min+11))
-    y_max = random.choice(np.arange(y_max-10,y_max+11))
+#     x_min = int(torch.min(x_coords))
+#     x_max = int(torch.max(x_coords))
+#     y_min = int(torch.min(y_coords))
+#     y_max = int(torch.max(y_coords))
+
+
+#     x_min = random.choice(np.arange(x_min-10,x_min+11))
+#     x_max = random.choice(np.arange(x_max-10,x_max+11))
+#     y_min = random.choice(np.arange(y_min-10,y_min+11))
+#     y_max = random.choice(np.arange(y_max-10,y_max+11))
+
+#     return x_min, x_max, y_min, y_max
+def random_box(mask_2d: np.ndarray):
+    # Assumes mask is a 2D NumPy array
+    nonzero_indices = np.argwhere(mask_2d > 0)
+
+    if len(nonzero_indices) == 0:
+        return [0, 0, 0, 0]  # or raise an error
+
+    x_coords = nonzero_indices[:, 0]
+    y_coords = nonzero_indices[:, 1]
+
+    x_min = int(np.min(x_coords))
+    x_max = int(np.max(x_coords))
+    y_min = int(np.min(y_coords))
+    y_max = int(np.max(y_coords))
+
+    x_min = np.random.choice(np.arange(x_min-10, x_min+11))
+    x_max = np.random.choice(np.arange(x_max-10, x_max+11))
+    y_min = np.random.choice(np.arange(y_min-10, y_min+11))
+    y_max = np.random.choice(np.arange(y_max-10, y_max+11))
 
     return x_min, x_max, y_min, y_max
 
