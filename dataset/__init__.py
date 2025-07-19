@@ -252,7 +252,7 @@ def get_dataloader(args):
         '''end'''
 
     elif args.dataset == 'oo':
-        '''REFUGE data'''
+        '''OOCYTE data'''
         dataset = Oocyte(args, args.data_path, shared_transform=shared_transform, img_transform=img_transform, infer_transform=infer_transform, mode = 'train', prompt = 'box')
 
         dataset_size = len(dataset)
