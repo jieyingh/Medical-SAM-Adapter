@@ -253,7 +253,7 @@ def get_dataloader(args):
 
     elif args.dataset == 'oo':
         '''OOCYTE data'''
-        dataset = Oocyte(args, args.data_path, shared_transform=shared_transform, img_transform=img_transform, infer_transform=infer_transform, mode = 'train', prompt = 'box')
+        dataset = Oocyte(args, args.data_path, shared_transform=shared_transform, img_transform=img_transform, infer_transform=infer_transform, mode = 'train', prompt = 'click')
 
         dataset_size = len(dataset)
         indices = list(range(dataset_size))

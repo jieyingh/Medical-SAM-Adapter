@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --time=01:30:00 
+#SBATCH --time=05:00:00 
 #SBATCH --gpus-per-node=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=3
 #SBATCH --mem=8G
 #SBATCH --account=def-banire
 #SBATCH --job-name=MedSAMBox
