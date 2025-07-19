@@ -17,23 +17,23 @@ source ~/envs/sam-adapt/bin/activate
 mkdir $SLURM_TMPDIR/data
 tar xf /lustre07/scratch/jieying/Medical-SAM-Adapter/data/train.tar -C $SLURM_TMPDIR/data
 
-python /lustre07/scratch/jieying/Medical-SAM-Adapter/train.py \
-    -exp_name 03-MedSAMBox-ZP \
-    -vis 10 \
-    -val_freq 1 \
-    -b 5 -dataset oo \
-    -sam_ckpt /lustre07/scratch/jieying/Medical-SAM-Adapter/checkpoint/medsam/medsam_vit_b.pth \
-    -d $SLURM_TMPDIR/data/train \
-    -l ZP
+# python /lustre07/scratch/jieying/Medical-SAM-Adapter/train.py \
+#     -exp_name 03-MedSAMBox-ZP \
+#     -vis 10 \
+#     -val_freq 1 \
+#     -b 5 -dataset oo \
+#     -sam_ckpt /lustre07/scratch/jieying/Medical-SAM-Adapter/checkpoint/medsam/medsam_vit_b.pth \
+#     -d $SLURM_TMPDIR/data/train \
+#     -l ZP
 
-python /lustre07/scratch/jieying/Medical-SAM-Adapter/train.py \
-    -exp_name 03-MedSAMBox-PVS \
-    -vis 10 \
-    -val_freq 1 \
-    -b 5 -dataset oo \
-    -sam_ckpt /lustre07/scratch/jieying/Medical-SAM-Adapter/checkpoint/medsam/medsam_vit_b.pth \
-    -d $SLURM_TMPDIR/data/train \
-    -l PVS
+# python /lustre07/scratch/jieying/Medical-SAM-Adapter/train.py \
+#     -exp_name 03-MedSAMBox-PVS \
+#     -vis 10 \
+#     -val_freq 1 \
+#     -b 5 -dataset oo \
+#     -sam_ckpt /lustre07/scratch/jieying/Medical-SAM-Adapter/checkpoint/medsam/medsam_vit_b.pth \
+#     -d $SLURM_TMPDIR/data/train \
+#     -l PVS
 
 python /lustre07/scratch/jieying/Medical-SAM-Adapter/train.py \
     -exp_name 03-MedSAMBox-OO \
