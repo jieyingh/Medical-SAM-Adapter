@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --time=01:30:00 
+#SBATCH --time=05:00:00 
 #SBATCH --gpus-per-node=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=3
 #SBATCH --mem=8G
 #SBATCH --account=def-banire
 #SBATCH --job-name=MedSAMBox
@@ -15,7 +15,7 @@ source ~/envs/sam-adapt/bin/activate
 
 # Unzip data in job
 mkdir $SLURM_TMPDIR/data
-tar xf /lustre07/scratch/jieying/Medical-SAM-Adapter/data/train.tar -C $SLURM_TMPDIR/data
+tar xf /lustre07/scratch/jieying/Medical-SAM-Adapter/data/train_donut.tar -C $SLURM_TMPDIR/data
 
 python /lustre07/scratch/jieying/Medical-SAM-Adapter/train.py \
     -exp_name 04-VanillaBox-ZP \
