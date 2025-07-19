@@ -34,7 +34,7 @@ def copy_files(base_name, image_path, mask_path, target_folder):
 
 if __name__ == "__main__":
     image_path = r'data\raw\images'
-    mask_path = r'data\raw\masks'
+    mask_path = r'data\raw\masks_full'
     train_path = r'data\train'
     test_path = r'data\test'
     train_ratio = 0.85
