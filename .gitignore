@@ -3,3 +3,4 @@
 /runs
 pipline.sh
 **/__pycache__/
+*.pth
