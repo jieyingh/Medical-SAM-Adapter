@@ -1238,12 +1238,11 @@ def generate_click_prompt(img, msk, pt_label = 1):
 #     y_max = random.choice(np.arange(y_max-10,y_max+11))
 
 #     return x_min, x_max, y_min, y_max
-def random_box(mask_2d: np.ndarray):
-    # Assumes mask is a 2D NumPy array
+def random_box(mask_2d: np.ndarray, max_expand: int = 10):
     nonzero_indices = np.argwhere(mask_2d > 0)
 
     if len(nonzero_indices) == 0:
-        return [0, 0, 0, 0]  # or raise an error
+        return [0, 0, 0, 0]
 
     x_coords = nonzero_indices[:, 0]
     y_coords = nonzero_indices[:, 1]
@@ -1253,12 +1252,19 @@ def random_box(mask_2d: np.ndarray):
     y_min = int(np.min(y_coords))
     y_max = int(np.max(y_coords))
 
-    x_min = np.random.choice(np.arange(x_min-10, x_min+11))
-    x_max = np.random.choice(np.arange(x_max-10, x_max+11))
-    y_min = np.random.choice(np.arange(y_min-10, y_min+11))
-    y_max = np.random.choice(np.arange(y_max-10, y_max+11))
+    # Compute expansion values (must be >=0)
+    expand_top = np.random.randint(1, max_expand + 1)
+    expand_bottom = np.random.randint(1, max_expand + 1)
+    expand_left = np.random.randint(1, max_expand + 1)
+    expand_right = np.random.randint(1, max_expand + 1)
 
-    return x_min, x_max, y_min, y_max
+    # Expand the box outwards
+    x_min_new = max(0, x_min - expand_top)
+    x_max_new = min(mask_2d.shape[0] - 1, x_max + expand_bottom)
+    y_min_new = max(0, y_min - expand_left)
+    y_max_new = min(mask_2d.shape[1] - 1, y_max + expand_right)
+
+    return x_min_new, x_max_new, y_min_new, y_max_new
 
 def validate_epoch(args, epoch, net, val_loader, writer, logger):
     if args.dataset != 'REFUGE':

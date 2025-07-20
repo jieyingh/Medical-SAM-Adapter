@@ -4,3 +4,4 @@
 pipline.sh
 **/__pycache__/
 *.pth
+__pycache__
