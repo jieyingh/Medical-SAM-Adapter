@@ -37,13 +37,13 @@ def json_to_mask(json_file, output_folder):
         # Draw outer shape(s)
         for shape in data["shapes"]:
             if shape["label"] == label:
-                draw.polygon(shape["points"], fill=1)
+                draw.polygon(shape["points"], fill=255)
 
         mask.save(str(mask_output_path) + f"_{label}.png")
 
 if __name__ == "__main__": 
     annotation_folder = r"data\raw\annotations"
-    output_folder = r"data\raw\masks_full"
+    output_folder = r"data\raw\masks_full_255"
     Path(output_folder).mkdir(parents=True, exist_ok=True)
 
     for json_file in Path(annotation_folder).glob("*.json"):
