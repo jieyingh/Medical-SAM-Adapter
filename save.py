@@ -5,6 +5,8 @@ import os
 import numpy as np
 from PIL import Image
 from skimage import measure
+from function import transform_prompt
+import cfg
 
 def keep_largest_connected_component(mask):
     labels = measure.label(mask)
@@ -34,6 +36,7 @@ def save_predictions(args, loader, model):
                 Image.fromarray(pred_mask * 255).save(out_path)  # save as 8-bit image
 
 def evaluate_and_save_predictions(args, dataloader, net, output_dir):
+    args = cfg.parse_args()
     device = torch.device('cuda:' + str(args.gpu_device) if args.gpu else 'cpu')
     net.eval()
 
@@ -53,7 +56,6 @@ def evaluate_and_save_predictions(args, dataloader, net, output_dir):
                 coords_torch = torch.as_tensor(pt, dtype=torch.float, device=device)
                 labels_torch = torch.as_tensor(point_labels, dtype=torch.int, device=device)
                 if args.net == 'efficient_sam':
-                    from function.util import transform_prompt
                     _, h, w = imgs.shape[-3:]
                     coords_torch, labels_torch = transform_prompt(coords_torch, labels_torch, h, w)
                 sparse_embeddings, dense_embeddings = net.prompt_encoder(
@@ -96,6 +98,6 @@ def evaluate_and_save_predictions(args, dataloader, net, output_dir):
 
             for idx in range(len(names)):
                 img_name = os.path.basename(names[idx])
-                save_path = os.path.join(output_dir, f"{os.path.splitext(img_name)[0]}_pred.png")
+                save_path = os.path.join(output_dir, f"{os.path.splitext(img_name)[0]}_{args.label}.png")
                 mask_np = pred_bin[idx] * 255  # 0 and 255 for 8-bit
                 Image.fromarray(mask_np).save(save_path)
