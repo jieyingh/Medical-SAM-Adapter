@@ -51,6 +51,10 @@ def parse_args():
     parser.add_argument('-d','--data_path', type=str, default='../data', help='The path of segmentation data')
     parser.add_argument('-vr','-val_ratio', type=float, default=0.2, help='validation ratio for train/val split')
     parser.add_argument('-l','--label', type=str, default=None, help='segmentation task label (only implemented for OO)')
+    parser.add_argument('-mode', type=str, default='train', help='dataset mode: train, val, test')
+    parser.add_argument('-prompt', type=str, default='none', help='prompt type: click, box, none')
+    parser.add_argument('-output_dir', type=str, default='output', help='directory to save output results')
+    parser.add_argument('--keep_largest', action='store_true', help='keep only the largest foreground object')
     opt = parser.parse_args()
 
     return opt

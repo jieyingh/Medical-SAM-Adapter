@@ -32,6 +32,7 @@ from tqdm import tqdm
 from torch.utils.data import DataLoader, random_split
 from utils import *
 import function
+from save import evaluate_and_save_predictions
 
 
 def main():
@@ -39,57 +40,50 @@ def main():
     if args.dataset == 'refuge' or args.dataset == 'refuge2':
         args.data_path = '../dataset'
 
-    GPUdevice = torch.device('cuda', args.gpu_device)
+    if args.output_dir is not None:
+        if not os.path.exists(args.output_dir):
+            print(f'Creating output directory: {args.output_dir}')
+            os.makedirs(args.output_dir)
 
-    net = get_network(args, args.net, use_gpu=args.gpu, gpu_device=GPUdevice, distribution = args.distributed)
+    device = torch.device('cuda', args.gpu_device)
+    net = get_network(args, args.net, use_gpu=args.gpu, gpu_device=device, distribution=args.distributed)
 
-    '''load pretrained model'''
+    ''' Load pretrained weights '''
     assert args.weights != 0
-    print(f'=> resuming from {args.weights}')
+    print(f'=> Resuming from {args.weights}')
     assert os.path.exists(args.weights)
-    checkpoint_file = os.path.join(args.weights)
-    assert os.path.exists(checkpoint_file)
-    loc = 'cuda:{}'.format(args.gpu_device)
-    checkpoint = torch.load(checkpoint_file, map_location=loc)
+    checkpoint = torch.load(args.weights, map_location=device)
     start_epoch = checkpoint['epoch']
     best_tol = checkpoint['best_tol']
 
     state_dict = checkpoint['state_dict']
     if args.distributed != 'none':
-        from collections import OrderedDict
         new_state_dict = OrderedDict()
         for k, v in state_dict.items():
-            # name = k[7:] # remove `module.`
             name = 'module.' + k
             new_state_dict[name] = v
-        # load params
     else:
         new_state_dict = state_dict
 
     net.load_state_dict(new_state_dict)
 
-    # args.path_helper = checkpoint['path_helper']
-    # logger = create_logger(args.path_helper['log_path'])
-    # print(f'=> loaded checkpoint {checkpoint_file} (epoch {start_epoch})')
-
-    # args.path_helper = set_log_dir('logs', args.exp_name)
-    # logger = create_logger(args.path_helper['log_path'])
-    # logger.info(args)
-
     args.path_helper = set_log_dir('logs', args.exp_name)
     logger = create_logger(args.path_helper['log_path'])
     logger.info(args)
 
-    '''segmentation data'''
-    nice_train_loader, nice_test_loader = get_dataloader(args)
+    # Load test dataloader
+    _, nice_test_loader = get_dataloader(args)
 
-    '''begain valuation'''
-    best_acc = 0.0
-    best_tol = 1e4
+    ''' Test mode: run evaluation and save predictions '''
+    if args.mode == 'test':
+        logger.info("Running in TEST mode...")
+        evaluate_and_save_predictions(args, nice_test_loader, net, args.output_dir)
+        logger.info(f"Saved predictions to {args.output_dir}")
+        return
 
+    ''' Otherwise run validation '''
     if args.mod == 'sam_adpt':
         net.eval()
-
         if args.dataset != 'REFUGE':
             tol, (eiou, edice) = function.validation_sam(args, nice_test_loader, start_epoch, net)
             logger.info(f'Total score: {tol}, IOU: {eiou}, DICE: {edice} || @ epoch {start_epoch}.')
